@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnswerEventArgs.cs" />
+    <Compile Include="Args\AnswerEventArgs.cs" />
     <Compile Include="ATS.cs" />
-    <Compile Include="CallEventArgs.cs" />
+    <Compile Include="Args\CallEventArgs.cs" />
     <Compile Include="Contract.cs" />
     <Compile Include="Enums\CallState.cs" />
     <Compile Include="Enums\PortState.cs" />
