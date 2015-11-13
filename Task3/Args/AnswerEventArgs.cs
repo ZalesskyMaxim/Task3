@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task3.Args;
 using Task3.Enums;
 
 namespace Task3
 {
-    public class AnswerEventArgs : EventArgs
+    public class AnswerEventArgs : EventArgs, ICallingEventArgs
     {
-        public readonly int telephoneNumber;
-        public readonly int targetTelephoneNumber;
+        public int TelephoneNumber { get; private set; }
+        public int TargetTelephoneNumber { get; private set; }
         public CallState StateInCall;
+        public int? Id { get; private set; }
         public AnswerEventArgs(int number, int target, CallState state)
         {
-            telephoneNumber = number;
-            targetTelephoneNumber = target;
+            TelephoneNumber = number;
+            TargetTelephoneNumber = target;
             StateInCall = state;
+        }
+        public AnswerEventArgs(int number, int target, CallState state, int id)
+        {
+            TelephoneNumber = number;
+            TargetTelephoneNumber = target;
+            StateInCall = state;
+            Id = id;
         }
 
 

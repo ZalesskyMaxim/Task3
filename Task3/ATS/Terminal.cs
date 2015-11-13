@@ -33,12 +33,12 @@ namespace Task3
                 CallEvent(this, new CallEventArgs(_number, targetNumber));
         }
 
-        protected virtual void RaiseAnswerEvent(int incomingNumber, CallState state)
+        protected virtual void RaiseAnswerEvent(int targetNumber, CallState state)
         {
             if (AnswerEvent != null)
             {
                 //AnswerEvent(this, new AnswerEventArgs(_number, incomingNumber, state));
-                AnswerEvent(this, new AnswerEventArgs(incomingNumber, _number, state));
+                AnswerEvent(this, new AnswerEventArgs(_number, targetNumber, state));
             }
         }
 
@@ -49,17 +49,21 @@ namespace Task3
 
         public void TakeIncomingCall(object sender, CallEventArgs e)
         {
-            Console.WriteLine("Have incoming Call at number: {0} to terminal {1}", e.telephoneNumber, e.targetTelephoneNumber);
+            Console.WriteLine("Have incoming Call at number: {0} to terminal {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
         }
 
         public void ConnectToPort()
         {
-            _terminalPort.Connect(this);
+            if (_terminalPort.Connect(this))
+            {
+                _terminalPort.IncomingCallEvent += TakeIncomingCall;
+                _terminalPort.PortAnswerEvent += TakeAnswer;
+            } 
         }
         
-        public void AnswerToCall(int incoming, CallState state)
+        public void AnswerToCall(int target, CallState state)
         {
-            RaiseAnswerEvent(incoming, state);
+            RaiseAnswerEvent(target, state);
         }
 
         public void RejectIncomingCall()
@@ -71,11 +75,11 @@ namespace Task3
         {
             if (e.StateInCall == CallState.Answered) 
             {
-                Console.WriteLine("Terminal with number: {0}, have answer on call a number: {1}", e.targetTelephoneNumber, e.telephoneNumber);
+                Console.WriteLine("Terminal with number: {0}, have answer on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
             }
             else
             {
-                Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.targetTelephoneNumber, e.telephoneNumber);
+                Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
             }
             
             
