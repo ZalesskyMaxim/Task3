@@ -54,25 +54,30 @@ namespace Task3
             return false;
         }
 
-        protected virtual void RaiseIncomingCallEvent(int incomingNumber)
+        protected virtual void RaiseIncomingCallEvent(int number, int incomingNumber)
         {
             if (IncomingCallEvent != null)
-                IncomingCallEvent(this, new CallEventArgs(incomingNumber, 0));
+            {
+                //IncomingCallEvent(this, new CallEventArgs(incomingNumber, number));
+                IncomingCallEvent(this, new CallEventArgs(number, incomingNumber));
+            }
         }
-        protected virtual void RaiseAnswerCallEvent(int outcomingNumber, CallState state)
+        protected virtual void RaiseAnswerCallEvent(int number, int outcomingNumber, CallState state)
         {
             if (PortAnswerEvent != null)
-                PortAnswerEvent(this, new AnswerEventArgs(outcomingNumber, 0, state));
+            {
+                PortAnswerEvent(this, new AnswerEventArgs(outcomingNumber, number, state));
+            }
         }
 
-        public void IncomingCall(int incomingNumber)
+        public void IncomingCall(int number, int incomingNumber)
         {
-            RaiseIncomingCallEvent(incomingNumber);
+            RaiseIncomingCallEvent(number, incomingNumber);
         }
 
-        public void AnswerCall(int outcomingNumber, CallState state)
+        public void AnswerCall(int number, int outcomingNumber, CallState state)
         {
-            RaiseAnswerCallEvent(outcomingNumber, state);
+            RaiseAnswerCallEvent(number, outcomingNumber, state);
         }
 
 
