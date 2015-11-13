@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Task3.Args;
 using Task3.Enums;
 
-namespace Task3
+namespace Task3.AutomaticTelephoneExchange
 {
     public class ATS
     {

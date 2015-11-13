@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task3.Args;
 
-namespace Task3
+namespace Task3.Args
 {
     public class CallEventArgs : EventArgs, ICallingEventArgs
     {

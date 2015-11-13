@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task3.AutomaticTelephoneExchange;
 
 namespace Task3
 {
@@ -24,8 +25,8 @@ namespace Task3
             t2.AnswerToCall(t1.Number, Enums.CallState.Rejected);
             t2.Call(t3.Number);
             t3.AnswerToCall(t2.Number, Enums.CallState.Answered);
-            //t2.Call(t2.Number);
-            //t2.Call(1234569);
+            t2.Call(t2.Number);
+            t2.Call(1234569);
             Console.ReadKey();
             
 

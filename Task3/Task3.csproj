@@ -43,19 +43,19 @@
   <ItemGroup>
     <Compile Include="Args\AnswerEventArgs.cs" />
     <Compile Include="Args\ICallingEventArgs.cs" />
-    <Compile Include="ATS\ATS.cs" />
+    <Compile Include="AutomaticTelephoneExchange\ATS.cs" />
     <Compile Include="Args\CallEventArgs.cs" />
-    <Compile Include="ATS\CallInformation.cs" />
+    <Compile Include="AutomaticTelephoneExchange\CallInformation.cs" />
     <Compile Include="BillingSystem\Contract.cs" />
     <Compile Include="Enums\CallState.cs" />
     <Compile Include="Enums\PortState.cs" />
     <Compile Include="Enums\TariffType.cs" />
-    <Compile Include="ATS\Port.cs" />
+    <Compile Include="AutomaticTelephoneExchange\Port.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BillingSystem\Subscriber.cs" />
     <Compile Include="BillingSystem\Tariff.cs" />
-    <Compile Include="ATS\Terminal.cs" />
+    <Compile Include="AutomaticTelephoneExchange\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
