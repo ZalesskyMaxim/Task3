@@ -8,12 +8,12 @@ using Task3.Enums;
 
 namespace Task3.AutomaticTelephoneExchange
 {
-    public class ATS
+    public class ATE
     {
         private IDictionary<int, Tuple<Port, Contract>> _usersData;
         Random rnd;
         //private IList<Contract> _listContract;
-        public ATS()
+        public ATE()
         {
             _usersData = new Dictionary<int, Tuple<Port, Contract>>();
             //_listTelephoneNumbers = new List<int>();

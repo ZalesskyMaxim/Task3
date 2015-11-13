@@ -11,13 +11,13 @@ namespace Task3
     {
         static void Main(string[] args)
         {
-            ATS ats = new ATS();
-            Contract c1 = ats.RegisterContract(new Subscriber("Vasia", "Pupkin"), Enums.TariffType.Light);
-            Contract c2 = ats.RegisterContract(new Subscriber("Dima", "Pupkin"), Enums.TariffType.Light);
-            Contract c3 = ats.RegisterContract(new Subscriber("Petya", "Pupkin"), Enums.TariffType.Light);
-            var t1 = ats.GetNewTerminal(c1);
-            var t2 = ats.GetNewTerminal(c2);
-            var t3 = ats.GetNewTerminal(c3);
+            ATE ate = new ATE();
+            Contract c1 = ate.RegisterContract(new Subscriber("Vasia", "Pupkin"), Enums.TariffType.Light);
+            Contract c2 = ate.RegisterContract(new Subscriber("Dima", "Pupkin"), Enums.TariffType.Light);
+            Contract c3 = ate.RegisterContract(new Subscriber("Petya", "Pupkin"), Enums.TariffType.Light);
+            var t1 = ate.GetNewTerminal(c1);
+            var t2 = ate.GetNewTerminal(c2);
+            var t3 = ate.GetNewTerminal(c3);
             t1.ConnectToPort();
             t2.ConnectToPort();
             t3.ConnectToPort();

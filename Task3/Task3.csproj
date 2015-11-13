@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="Args\AnswerEventArgs.cs" />
     <Compile Include="Args\ICallingEventArgs.cs" />
-    <Compile Include="AutomaticTelephoneExchange\ATS.cs" />
+    <Compile Include="AutomaticTelephoneExchange\ATE.cs" />
     <Compile Include="Args\CallEventArgs.cs" />
     <Compile Include="AutomaticTelephoneExchange\CallInformation.cs" />
     <Compile Include="BillingSystem\Contract.cs" />
