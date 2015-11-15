@@ -59,11 +59,26 @@ namespace Task3.AutomaticTelephoneExchange
                 IncomingCallEvent(this, new CallEventArgs(number, targetNumber));
             }
         }
+        protected virtual void RaiseIncomingCallEvent(int number, int targetNumber, Guid id)
+        {
+            if (IncomingCallEvent != null)
+            {
+                //IncomingCallEvent(this, new CallEventArgs(incomingNumber, number));
+                IncomingCallEvent(this, new CallEventArgs(number, targetNumber, id));
+            }
+        }
         protected virtual void RaiseAnswerCallEvent(int number, int targetNumber, CallState state)
         {
             if (PortAnswerEvent != null)
             {
                 PortAnswerEvent(this, new AnswerEventArgs(number, targetNumber, state));
+            }
+        }
+        protected virtual void RaiseAnswerCallEvent(int number, int targetNumber, CallState state, Guid id)
+        {
+            if (PortAnswerEvent != null)
+            {
+                PortAnswerEvent(this, new AnswerEventArgs(number, targetNumber, state, id));
             }
         }
 
@@ -97,10 +112,18 @@ namespace Task3.AutomaticTelephoneExchange
         {
             RaiseIncomingCallEvent(number, targetNumber);
         }
+        public void IncomingCall(int number, int targetNumber, Guid id)
+        {
+            RaiseIncomingCallEvent(number, targetNumber, id);
+        }
 
         public void AnswerCall(int number, int targetNumber, CallState state)
         {
             RaiseAnswerCallEvent(number, targetNumber, state);
+        }
+        public void AnswerCall(int number, int targetNumber, CallState state, Guid id)
+        {
+            RaiseAnswerCallEvent(number, targetNumber, state, id);
         }
 
 

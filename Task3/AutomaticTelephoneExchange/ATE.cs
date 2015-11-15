@@ -12,26 +12,18 @@ namespace Task3.AutomaticTelephoneExchange
     {
         private IDictionary<int, Tuple<Port, Contract>> _usersData;
         Random rnd;
-        //private IList<Contract> _listContract;
+        private IList<CallInformation> callList = new List<CallInformation>();
         public ATE()
         {
             _usersData = new Dictionary<int, Tuple<Port, Contract>>();
-            //_listTelephoneNumbers = new List<int>();
             rnd = new Random();
-            //_listContract = new List<Contract>();
         }
 
         public Terminal GetNewTerminal(Contract contract)
         {
-
-            //var numberTelephone = rnd.Next(1000000, 9999999);
-            //_listTelephoneNumbers.Add(numberTelephone);
-
             var newPort = new Port();
-
             newPort.AnswerEvent += CallingTo;
             newPort.CallEvent += CallingTo;
-            //_listPorts.Add(newPort);
             _usersData.Add(contract.Number, new Tuple<Port, Contract>(newPort, contract));
             var newTerminal = new Terminal(contract.Number, newPort);
             return newTerminal;
@@ -40,55 +32,78 @@ namespace Task3.AutomaticTelephoneExchange
         public Contract RegisterContract(Subscriber subscriber, TariffType type)
         {
             var contract = new Contract(subscriber, type);
-            //_listContract.Add(contract);
             return contract;
         }
-
-        //public void CallingTo(object sender, ICallingEventArgs e)
-        //{
-        //    if (_listTelephoneNumbers.Contains(e.TargetTelephoneNumber) && e.TargetTelephoneNumber != e.TelephoneNumber)
-        //    {
-        //        var index = _listTelephoneNumbers.IndexOf(e.TargetTelephoneNumber);
-        //        if (_listPorts[index].State == Enums.PortState.Connect)
-        //        {
-        //            _listPorts[index].IncomingCall(e.TelephoneNumber, e.TargetTelephoneNumber);
-        //        }
-        //    }
-        //    else if (!_listTelephoneNumbers.Contains(e.TargetTelephoneNumber))
-        //    {
-        //        Console.WriteLine("You have calling a non-existent number!!!");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("You have calling a your number!!!");
-        //    }
-        //}
 
         public void CallingTo(object sender, ICallingEventArgs e)
         {
             if (_usersData.ContainsKey(e.TargetTelephoneNumber) && e.TargetTelephoneNumber != e.TelephoneNumber)
             {
-                var port = _usersData[(e.TargetTelephoneNumber)].Item1;
-                if (port.State == Enums.PortState.Connect)
+                var targetPort = _usersData[(e.TargetTelephoneNumber)].Item1;
+                var port = _usersData[(e.TelephoneNumber)].Item1;
+                if (targetPort.State == Enums.PortState.Connect && port.State == PortState.Connect)
                 {
-                    var tuple = _usersData[(e.TargetTelephoneNumber)];
+                    var tuple = _usersData[(e.TelephoneNumber)];
+                    var targetTuple = _usersData[(e.TargetTelephoneNumber)];
+
                     if (e is AnswerEventArgs)
                     {
                         
                         var answerArgs = (AnswerEventArgs)e;
+                        CallInformation inf = null;
+                        if (answerArgs.Id == null)
+                        {
+                            inf = new CallInformation();
+                            callList.Add(inf);
+                        }
+
+                        if (answerArgs.Id != null && callList.Any(x => x.Id == answerArgs.Id))
+                        {
+                            inf = callList.First(x => x.Id == answerArgs.Id);
+                        }
                         if (answerArgs.StateInCall == CallState.Answered )
                         {
-                            //var tuple = _usersData[(e.TargetTelephoneNumber)];
-                            tuple.Item2.Subscriber.RemoveMoney(tuple.Item2.Tariff.CostOfCall);
+                            targetTuple.Item2.Subscriber.RemoveMoney(tuple.Item2.Tariff.CostOfCall);
                         }
-                        port.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall);
+                        if (inf != null)
+                        {
+                            //targetPort.IncomingCall(callArgs.TelephoneNumber, callArgs.TargetTelephoneNumber, inf.Id);
+                            targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall, inf.Id);
+                        }
+                        else
+                        {
+                            targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall);
+                        }
+                        //targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall);
                     }
                     if (e is CallEventArgs)
                     {
-                        if (tuple.Item2.Subscriber.Money > 0)   ///допилить в зависимости от тарифа
+                        if (tuple.Item2.Subscriber.Money > tuple.Item2.Tariff.CostOfCall)
                         {
                             var callArgs = (CallEventArgs)e;
-                            port.IncomingCall(callArgs.TelephoneNumber, callArgs.TargetTelephoneNumber);
+                            CallInformation inf = null;
+                            if (callArgs.Id == null)
+                            {
+                                inf = new CallInformation();
+                                callList.Add(inf);
+                            }
+
+                            if(callArgs.Id != null && callList.Any(x=>x.Id == callArgs.Id))
+                            {
+                                inf = callList.First(x => x.Id == callArgs.Id);
+                            }
+                            if (inf != null)
+                            {
+                                targetPort.IncomingCall(callArgs.TelephoneNumber, callArgs.TargetTelephoneNumber, inf.Id);
+                            }
+                            else
+                            {
+                                targetPort.IncomingCall(callArgs.TelephoneNumber, callArgs.TargetTelephoneNumber);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Terminal with number {0} is not enough money in the account!", e.TelephoneNumber);
                         }
                     }
                 }

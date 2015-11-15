@@ -13,14 +13,14 @@ namespace Task3.Args
         public int TelephoneNumber { get; private set; }
         public int TargetTelephoneNumber { get; private set; }
         public CallState StateInCall;
-        public int? Id { get; private set; }
+        public Guid Id { get; private set; }
         public AnswerEventArgs(int number, int target, CallState state)
         {
             TelephoneNumber = number;
             TargetTelephoneNumber = target;
             StateInCall = state;
         }
-        public AnswerEventArgs(int number, int target, CallState state, int id)
+        public AnswerEventArgs(int number, int target, CallState state, Guid id)
         {
             TelephoneNumber = number;
             TargetTelephoneNumber = target;

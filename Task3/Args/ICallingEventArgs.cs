@@ -10,6 +10,6 @@ namespace Task3.Args
     {
         int TelephoneNumber { get; }
         int TargetTelephoneNumber { get; }
-        int? Id { get; }
+        Guid Id { get; }
     }
 }

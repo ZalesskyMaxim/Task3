@@ -13,6 +13,7 @@ namespace Task3
         {
             ATE ate = new ATE();
             Contract c1 = ate.RegisterContract(new Subscriber("Vasia", "Pupkin"), Enums.TariffType.Light);
+            c1.Subscriber.AddMoney(10);
             Contract c2 = ate.RegisterContract(new Subscriber("Dima", "Pupkin"), Enums.TariffType.Light);
             Contract c3 = ate.RegisterContract(new Subscriber("Petya", "Pupkin"), Enums.TariffType.Light);
             var t1 = ate.GetNewTerminal(c1);
@@ -27,6 +28,7 @@ namespace Task3
             t3.AnswerToCall(t2.Number, Enums.CallState.Answered);
             t2.Call(t2.Number);
             t2.Call(1234569);
+
             Console.ReadKey();
             
 
