@@ -19,10 +19,13 @@ namespace Task3.AutomaticTelephoneExchange
             }
         }
         private Port _terminalPort;
+        private Guid _id;
         public delegate void CallEventHandler(object sender, CallEventArgs e);
         public event CallEventHandler CallEvent;
         public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
         public event AnswerEventHandler AnswerEvent;
+        public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
+        public event EndCallEventHandler EndCallEvent;
         public Terminal(int number, Port port)
         {
             this._number = number;
@@ -34,13 +37,19 @@ namespace Task3.AutomaticTelephoneExchange
                 CallEvent(this, new CallEventArgs(_number, targetNumber));
         }
 
-        protected virtual void RaiseAnswerEvent(int targetNumber, CallState state)
+        protected virtual void RaiseAnswerEvent(int targetNumber, CallState state, Guid id)
         {
             if (AnswerEvent != null)
             {
                 //AnswerEvent(this, new AnswerEventArgs(_number, incomingNumber, state));
-                AnswerEvent(this, new AnswerEventArgs(_number, targetNumber, state));
+                AnswerEvent(this, new AnswerEventArgs(_number, targetNumber, state, id));
             }
+        }
+
+        protected virtual void RaiseEndCallEvent(Guid id)
+        {
+            if (EndCallEvent != null)
+                EndCallEvent(this, new EndCallEventArgs(id, _number));
         }
 
         public void Call(int targetNumber)
@@ -50,31 +59,56 @@ namespace Task3.AutomaticTelephoneExchange
 
         public void TakeIncomingCall(object sender, CallEventArgs e)
         {
+            bool flag = true;
+            _id = e.Id;
             Console.WriteLine("Have incoming Call at number: {0} to terminal {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
+            while (flag == true)
+            {
+                Console.WriteLine("Answer? Y/N");
+                char k = Console.ReadKey().KeyChar;
+                if (k == 'Y' || k == 'y')
+                {
+                    flag = false;
+                    Console.WriteLine();
+                    AnswerToCall(e.TelephoneNumber, CallState.Answered, e.Id);
+                }
+                else if (k == 'N' || k == 'n')
+                {
+                    flag = false;
+                    Console.WriteLine();
+                    EndCall();
+                }
+                else
+                {
+                    flag = true;
+                    Console.WriteLine();
+                }
+            }
         }
 
         public void ConnectToPort()
         {
             if (_terminalPort.Connect(this))
             {
-                _terminalPort.IncomingCallEvent += TakeIncomingCall;
-                _terminalPort.PortAnswerEvent += TakeAnswer;
+                _terminalPort.CallPortEvent += TakeIncomingCall;
+                _terminalPort.AnswerPortEvent += TakeAnswer;
             } 
         }
         
-        public void AnswerToCall(int target, CallState state)
+        public void AnswerToCall(int target, CallState state, Guid id)
         {
-            RaiseAnswerEvent(target, state);
+            RaiseAnswerEvent(target, state, id);
         }
 
-        public void RejectIncomingCall()
+        public void EndCall()
         { 
-            
+            RaiseEndCallEvent(_id);
         }
 
         public void TakeAnswer(object sender, AnswerEventArgs e)
         {
-            if (e.StateInCall == CallState.Answered) 
+            _id = e.Id;
+            if (e.StateInCall == CallState.Answered)
             {
                 Console.WriteLine("Terminal with number: {0}, have answer on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
             }
@@ -82,9 +116,28 @@ namespace Task3.AutomaticTelephoneExchange
             {
                 Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
             }
-            
-            
         }
+        //public void TakeAnswer(object sender, ICallingEventArgs e)
+        //{
+        //    _id = e.Id;
+        //    if (e is AnswerEventArgs)
+        //    {
+        //        var answerArgs = (AnswerEventArgs)e;
+        //        if (answerArgs.StateInCall == CallState.Answered)
+        //        {
+        //            Console.WriteLine("Terminal with number: {0}, have answer on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var endCallArgs = (EndCallEventArgs)e;
+        //        Console.WriteLine("Terminal with number: {0}, have rejected on call", e.TelephoneNumber);
+        //    }
+        //}
 
     }
 }

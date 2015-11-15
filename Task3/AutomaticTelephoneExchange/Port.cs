@@ -13,14 +13,24 @@ namespace Task3.AutomaticTelephoneExchange
     {
         public PortState State;
         public bool Flag;
-        public delegate void PortEventHandler(object sender, CallEventArgs e);
-        public event PortEventHandler IncomingCallEvent;
-        public delegate void PortAnswerEventHandler(object sender, AnswerEventArgs e);
-        public event PortAnswerEventHandler PortAnswerEvent;
-        public delegate void CallEventHandler(object sender, CallEventArgs e);
-        public event CallEventHandler CallEvent;
-        public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
-        public event AnswerEventHandler AnswerEvent;
+        //public delegate void CallPortEventHandler(object sender, CallEventArgs e);
+        //public event CallPortEventHandler CallPortEvent;
+        //public delegate void AnswerPortEventHandler(object sender, AnswerEventArgs e);
+        //public event AnswerPortEventHandler AnswerPortEvent;
+        //public delegate void CallEventHandler(object sender, CallEventArgs e);
+        //public event CallEventHandler CallEvent;
+        //public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
+        //public event AnswerEventHandler AnswerEvent;
+
+        //public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
+        //public event EndCallEventHandler EndCallEvent;
+
+        public event EventHandler<CallEventArgs> CallPortEvent;
+        public event EventHandler<AnswerEventArgs> AnswerPortEvent;
+        public event EventHandler<CallEventArgs> CallEvent;
+        public event EventHandler<AnswerEventArgs> AnswerEvent;
+
+        public event EventHandler<EndCallEventArgs> EndCallEvent;
 
         public Port()
         {
@@ -34,6 +44,7 @@ namespace Task3.AutomaticTelephoneExchange
                 State = PortState.Connect;
                 terminal.CallEvent += CallingTo;
                 terminal.AnswerEvent += AnswerTo;
+                terminal.EndCallEvent += EndCall;
                 Flag = true;
             }
             return Flag;
@@ -46,6 +57,7 @@ namespace Task3.AutomaticTelephoneExchange
                 State = PortState.Disconnect;
                 terminal.CallEvent -= CallingTo;
                 terminal.AnswerEvent -= AnswerTo;
+                terminal.EndCallEvent -= EndCall;
                 Flag = false;
             }
             return false;
@@ -53,32 +65,30 @@ namespace Task3.AutomaticTelephoneExchange
 
         protected virtual void RaiseIncomingCallEvent(int number, int targetNumber)
         {
-            if (IncomingCallEvent != null)
+            if (CallPortEvent != null)
             {
-                //IncomingCallEvent(this, new CallEventArgs(incomingNumber, number));
-                IncomingCallEvent(this, new CallEventArgs(number, targetNumber));
+                CallPortEvent(this, new CallEventArgs(number, targetNumber));
             }
         }
         protected virtual void RaiseIncomingCallEvent(int number, int targetNumber, Guid id)
         {
-            if (IncomingCallEvent != null)
+            if (CallPortEvent != null)
             {
-                //IncomingCallEvent(this, new CallEventArgs(incomingNumber, number));
-                IncomingCallEvent(this, new CallEventArgs(number, targetNumber, id));
+                CallPortEvent(this, new CallEventArgs(number, targetNumber, id));
             }
         }
         protected virtual void RaiseAnswerCallEvent(int number, int targetNumber, CallState state)
         {
-            if (PortAnswerEvent != null)
+            if (AnswerPortEvent != null)
             {
-                PortAnswerEvent(this, new AnswerEventArgs(number, targetNumber, state));
+                AnswerPortEvent(this, new AnswerEventArgs(number, targetNumber, state));
             }
         }
         protected virtual void RaiseAnswerCallEvent(int number, int targetNumber, CallState state, Guid id)
         {
-            if (PortAnswerEvent != null)
+            if (AnswerPortEvent != null)
             {
-                PortAnswerEvent(this, new AnswerEventArgs(number, targetNumber, state, id));
+                AnswerPortEvent(this, new AnswerEventArgs(number, targetNumber, state, id));
             }
         }
 
@@ -90,11 +100,23 @@ namespace Task3.AutomaticTelephoneExchange
             }
         }
 
-        protected virtual void RaiseAnswerToEvent(int number, int targetNumber, CallState state)
+        protected virtual void RaiseAnswerToEvent(AnswerEventArgs eventArgs)
         {
             if (AnswerEvent != null)
             {
-                AnswerEvent(this, new AnswerEventArgs(number, targetNumber, state));
+                AnswerEvent(this, new AnswerEventArgs(
+                    eventArgs.TelephoneNumber, 
+                    eventArgs.TargetTelephoneNumber,
+                    eventArgs.StateInCall,
+                    eventArgs.Id));
+            }
+        }
+
+        protected virtual void RaiseEndCallEvent(Guid id, int number)
+        {
+            if (EndCallEvent != null)
+            {
+                EndCallEvent(this, new EndCallEventArgs(id, number));
             }
         }
 
@@ -105,7 +127,12 @@ namespace Task3.AutomaticTelephoneExchange
 
         private void AnswerTo(object sender, AnswerEventArgs e)
         {
-            RaiseAnswerToEvent(e.TelephoneNumber, e.TargetTelephoneNumber, e.StateInCall);
+            RaiseAnswerToEvent(e);
+        }
+
+        private void EndCall(object sender, EndCallEventArgs e)
+        {
+            RaiseEndCallEvent(e.Id, e.TelephoneNumber);
         }
 
         public void IncomingCall(int number, int targetNumber)

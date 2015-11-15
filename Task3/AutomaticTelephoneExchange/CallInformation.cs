@@ -11,17 +11,16 @@ namespace Task3.AutomaticTelephoneExchange
         public Guid Id { get; set; }
         public int MyNumber { get; set; }
         public int TargetNumber { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime BeginCall { get; set; }
+        public DateTime EndCall { get; set; }
         public int Cost { get; set; }
 
-        public CallInformation()
+        public CallInformation(int myNumber, int targetNumber, DateTime beginCall)
         {
             Id = Guid.NewGuid();
-        }
-
-        public CallInformation(Guid id)
-        {
-            Id = id;
+            MyNumber = myNumber;
+            TargetNumber = targetNumber;
+            BeginCall = beginCall;
         }
 
     }

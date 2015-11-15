@@ -42,15 +42,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args\AnswerEventArgs.cs" />
+    <Compile Include="Args\EndCallEventArgs.cs" />
     <Compile Include="Args\ICallingEventArgs.cs" />
     <Compile Include="AutomaticTelephoneExchange\ATE.cs" />
     <Compile Include="Args\CallEventArgs.cs" />
     <Compile Include="AutomaticTelephoneExchange\CallInformation.cs" />
+    <Compile Include="BillingSystem\BillingSystem.cs" />
     <Compile Include="BillingSystem\Contract.cs" />
+    <Compile Include="BillingSystem\Report.cs" />
+    <Compile Include="BillingSystem\ReportRecord.cs" />
+    <Compile Include="BillingSystem\ReportRender.cs" />
     <Compile Include="Enums\CallState.cs" />
+    <Compile Include="Enums\CallType.cs" />
     <Compile Include="Enums\PortState.cs" />
     <Compile Include="Enums\TariffType.cs" />
     <Compile Include="AutomaticTelephoneExchange\Port.cs" />
+    <Compile Include="Interfaces\IReportRender.cs" />
+    <Compile Include="Interfaces\IStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BillingSystem\Subscriber.cs" />
