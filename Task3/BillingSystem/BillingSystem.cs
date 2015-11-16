@@ -12,7 +12,6 @@ namespace Task3.BillingSystem
     public class BillingSystem : IBillingSystem
     {
         private IStorage<CallInformation> _storage;
-        //private IList<CallInformation> _callList;
         public BillingSystem(IStorage<CallInformation> storage)
         {
             _storage = storage;

@@ -36,10 +36,6 @@ namespace Task3
             t2.Call(t1.Number);
             Thread.Sleep(3000);
             t1.EndCall();
-            //t1.Call(t1.Number);
-            //t2.Call(1234569);
-            
-            //render.Render(bs.GetReport(t1.Number));
 
             Console.WriteLine();
             Console.WriteLine("Sorted records:");

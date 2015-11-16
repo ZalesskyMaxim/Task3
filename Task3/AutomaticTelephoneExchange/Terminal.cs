@@ -21,12 +21,7 @@ namespace Task3.AutomaticTelephoneExchange
         }
         private Port _terminalPort;
         private Guid _id;
-        //public delegate void CallEventHandler(object sender, CallEventArgs e);
-        //public event CallEventHandler CallEvent;
-        //public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
-        //public event AnswerEventHandler AnswerEvent;
-        //public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
-        //public event EndCallEventHandler EndCallEvent;
+
         public event EventHandler<CallEventArgs> CallEvent;
         public event EventHandler<AnswerEventArgs> AnswerEvent;
         public event EventHandler<EndCallEventArgs> EndCallEvent;
@@ -45,7 +40,6 @@ namespace Task3.AutomaticTelephoneExchange
         {
             if (AnswerEvent != null)
             {
-                //AnswerEvent(this, new AnswerEventArgs(_number, incomingNumber, state));
                 AnswerEvent(this, new AnswerEventArgs(_number, targetNumber, state, id));
             }
         }

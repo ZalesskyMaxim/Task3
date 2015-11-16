@@ -31,22 +31,22 @@ namespace Task3.BillingSystem
                     return rep = rep.
                         OrderBy(x => x.CallType).
                         ToList(); 
-                        //break;
+
                 case TypeSort.SortByDate:
                     return rep = rep.
                         OrderBy(x => x.Date).
                         ToList(); 
-                        //break;
+
                 case TypeSort.SortByCost:
                     return rep = rep
                         .OrderBy(x => x.Cost)
                         .ToList();
-                        //break;
+
                 case TypeSort.SortByNumber:
                     return rep = rep.
                         OrderBy(x => x.Number).
                         ToList(); 
-                        //break;
+
                 default: 
                     return null;
             }

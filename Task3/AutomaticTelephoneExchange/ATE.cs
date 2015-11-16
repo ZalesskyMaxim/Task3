@@ -81,30 +81,19 @@ namespace Task3.AutomaticTelephoneExchange
                         
                         var answerArgs = (AnswerEventArgs)e;
 
-                        //if (answerArgs.Id.Equals(Guid.Empty))
-                        //{
-                        //    inf = new CallInformation();
-                        //    _callList.Add(inf);
-                        //}
-
                         if (!answerArgs.Id.Equals(Guid.Empty) && _callList.Any(x => x.Id.Equals(answerArgs.Id)))
                         {
                             inf = _callList.First(x => x.Id.Equals(answerArgs.Id));
                         }
-                        //if (answerArgs.StateInCall == CallState.Answered )
-                        //{
-                        //    targetTuple.Item2.Subscriber.RemoveMoney(tuple.Item2.Tariff.CostOfCall);
-                        //}
+
                         if (inf != null)
                         {
-                            //targetPort.IncomingCall(callArgs.TelephoneNumber, callArgs.TargetTelephoneNumber, inf.Id);
                             targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall, inf.Id);
                         }
                         else
                         {
                             targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall);
                         }
-                        //targetPort.AnswerCall(answerArgs.TelephoneNumber, answerArgs.TargetTelephoneNumber, answerArgs.StateInCall);
                     }
                     if (e is CallEventArgs)
                     {

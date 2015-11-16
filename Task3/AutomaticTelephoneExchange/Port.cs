@@ -14,17 +14,6 @@ namespace Task3.AutomaticTelephoneExchange
     {
         public PortState State;
         public bool Flag;
-        //public delegate void CallPortEventHandler(object sender, CallEventArgs e);
-        //public event CallPortEventHandler CallPortEvent;
-        //public delegate void AnswerPortEventHandler(object sender, AnswerEventArgs e);
-        //public event AnswerPortEventHandler AnswerPortEvent;
-        //public delegate void CallEventHandler(object sender, CallEventArgs e);
-        //public event CallEventHandler CallEvent;
-        //public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
-        //public event AnswerEventHandler AnswerEvent;
-
-        //public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
-        //public event EndCallEventHandler EndCallEvent;
 
         public event EventHandler<CallEventArgs> CallPortEvent;
         public event EventHandler<AnswerEventArgs> AnswerPortEvent;
