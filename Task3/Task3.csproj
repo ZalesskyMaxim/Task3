@@ -57,6 +57,10 @@
     <Compile Include="Enums\PortState.cs" />
     <Compile Include="Enums\TariffType.cs" />
     <Compile Include="AutomaticTelephoneExchange\Port.cs" />
+    <Compile Include="Enums\TypeSort.cs" />
+    <Compile Include="Interfaces\IATE.cs" />
+    <Compile Include="Interfaces\IBillingSystem.cs" />
+    <Compile Include="Interfaces\IContract.cs" />
     <Compile Include="Interfaces\IReportRender.cs" />
     <Compile Include="Interfaces\IStorage.cs" />
     <Compile Include="Program.cs" />

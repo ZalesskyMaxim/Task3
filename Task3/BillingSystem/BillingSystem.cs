@@ -9,7 +9,7 @@ using Task3.Interfaces;
 
 namespace Task3.BillingSystem
 {
-    public class BillingSystem
+    public class BillingSystem : IBillingSystem
     {
         private IStorage<CallInformation> _storage;
         //private IList<CallInformation> _callList;

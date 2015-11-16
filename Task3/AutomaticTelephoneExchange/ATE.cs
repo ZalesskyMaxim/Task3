@@ -9,29 +9,28 @@ using Task3.Interfaces;
 
 namespace Task3.AutomaticTelephoneExchange
 {
-    public class ATE : IStorage<CallInformation>
+    public class ATE : IATE
     {
-        private IDictionary<int, Tuple<Port, Contract>> _usersData;
-        private Random _rnd;
+        private IDictionary<int, Tuple<Port, IContract>> _usersData;
         private IList<CallInformation> _callList = new List<CallInformation>();
         public ATE()
         {
-            _usersData = new Dictionary<int, Tuple<Port, Contract>>();
-            _rnd = new Random();
+            _usersData = new Dictionary<int, Tuple<Port, IContract>>();
+            
         }
 
-        public Terminal GetNewTerminal(Contract contract)
+        public Terminal GetNewTerminal(IContract contract)
         {
             var newPort = new Port();
             newPort.AnswerEvent += CallingTo;
             newPort.CallEvent += CallingTo;
             newPort.EndCallEvent += CallingTo;
-            _usersData.Add(contract.Number, new Tuple<Port, Contract>(newPort, contract));
+            _usersData.Add(contract.Number, new Tuple<Port, IContract>(newPort, contract));
             var newTerminal = new Terminal(contract.Number, newPort);
             return newTerminal;
         }
 
-        public Contract RegisterContract(Subscriber subscriber, TariffType type)
+        public IContract RegisterContract(Subscriber subscriber, TariffType type)
         {
             var contract = new Contract(subscriber, type);
             return contract;
@@ -50,7 +49,7 @@ namespace Task3.AutomaticTelephoneExchange
                 if (e is EndCallEventArgs)
                 {
                     var callListFirst = _callList.First(x => x.Id.Equals(e.Id));
-                    if (_callList.First(x => x.Id.Equals(e.Id)).MyNumber == e.TelephoneNumber)
+                    if (callListFirst.MyNumber == e.TelephoneNumber)
                     {
                         targetPort = _usersData[callListFirst.TargetNumber].Item1;
                         port = _usersData[callListFirst.MyNumber].Item1;
@@ -81,7 +80,7 @@ namespace Task3.AutomaticTelephoneExchange
                     {
                         
                         var answerArgs = (AnswerEventArgs)e;
-                        //CallInformation inf = null;
+
                         //if (answerArgs.Id.Equals(Guid.Empty))
                         //{
                         //    inf = new CallInformation();
@@ -112,7 +111,7 @@ namespace Task3.AutomaticTelephoneExchange
                         if (tuple.Item2.Subscriber.Money > tuple.Item2.Tariff.CostOfCallPerMinute)
                         {
                             var callArgs = (CallEventArgs)e;
-                            //CallInformation inf = null;
+
                             if (callArgs.Id.Equals(Guid.Empty))
                             {
                                 inf = new CallInformation(
@@ -138,6 +137,7 @@ namespace Task3.AutomaticTelephoneExchange
                         else
                         {
                             Console.WriteLine("Terminal with number {0} is not enough money in the account!", e.TelephoneNumber);
+
                         }
                     }
                     if (e is EndCallEventArgs)

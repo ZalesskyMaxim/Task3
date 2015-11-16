@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task3.Args;
 using Task3.Enums;
+using Task3.Interfaces;
 
 namespace Task3.AutomaticTelephoneExchange
 {
@@ -20,12 +21,15 @@ namespace Task3.AutomaticTelephoneExchange
         }
         private Port _terminalPort;
         private Guid _id;
-        public delegate void CallEventHandler(object sender, CallEventArgs e);
-        public event CallEventHandler CallEvent;
-        public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
-        public event AnswerEventHandler AnswerEvent;
-        public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
-        public event EndCallEventHandler EndCallEvent;
+        //public delegate void CallEventHandler(object sender, CallEventArgs e);
+        //public event CallEventHandler CallEvent;
+        //public delegate void AnswerEventHandler(object sender, AnswerEventArgs e);
+        //public event AnswerEventHandler AnswerEvent;
+        //public delegate void EndCallEventHandler(object sender, EndCallEventArgs e);
+        //public event EndCallEventHandler EndCallEvent;
+        public event EventHandler<CallEventArgs> CallEvent;
+        public event EventHandler<AnswerEventArgs> AnswerEvent;
+        public event EventHandler<EndCallEventArgs> EndCallEvent;
         public Terminal(int number, Port port)
         {
             this._number = number;
@@ -114,30 +118,8 @@ namespace Task3.AutomaticTelephoneExchange
             }
             else
             {
-                Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
+                Console.WriteLine("Terminal with number: {0}, have rejected call", e.TelephoneNumber);
             }
         }
-        //public void TakeAnswer(object sender, ICallingEventArgs e)
-        //{
-        //    _id = e.Id;
-        //    if (e is AnswerEventArgs)
-        //    {
-        //        var answerArgs = (AnswerEventArgs)e;
-        //        if (answerArgs.StateInCall == CallState.Answered)
-        //        {
-        //            Console.WriteLine("Terminal with number: {0}, have answer on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Terminal with number: {0}, have rejected on call a number: {1}", e.TelephoneNumber, e.TargetTelephoneNumber);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var endCallArgs = (EndCallEventArgs)e;
-        //        Console.WriteLine("Terminal with number: {0}, have rejected on call", e.TelephoneNumber);
-        //    }
-        //}
-
     }
 }

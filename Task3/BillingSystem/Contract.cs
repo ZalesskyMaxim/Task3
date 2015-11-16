@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task3.Enums;
+using Task3.Interfaces;
 
 namespace Task3
 {
-    public class Contract
+    public class Contract : IContract
     {
         static Random rnd = new Random();
 
@@ -31,9 +32,15 @@ namespace Task3
             {
                 LastTariffUpdateDate = DateTime.Now;
                 Tariff = new Tariff(tariffType);
+                Console.WriteLine("Tariff has changed!");
                 return true;
             }
-            return false;
+            else
+            {
+                Console.WriteLine("Цait until the end of the month!");
+                return false;
+            }
+            
         }
     }
 }
