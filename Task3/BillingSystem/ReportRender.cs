@@ -47,8 +47,8 @@ namespace Task3.BillingSystem
                         OrderBy(x => x.Number).
                         ToList(); 
 
-                default: 
-                    return null;
+                default:
+                    return rep;
             }
         }
     }
