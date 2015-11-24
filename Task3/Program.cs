@@ -15,12 +15,14 @@ namespace Task3
         static void Main(string[] args)
         {
             IATE ate = new ATE();
-            IContract c1 = ate.RegisterContract(new Subscriber("Vasia", "Pupkin"), Enums.TariffType.Light);
-            c1.Subscriber.AddMoney(10);
-            IContract c2 = ate.RegisterContract(new Subscriber("Dima", "Pupkin"), Enums.TariffType.Light);
-            IContract c3 = ate.RegisterContract(new Subscriber("Petya", "Pupkin"), Enums.TariffType.Light);
             IReportRender render = new ReportRender();
             IBillingSystem bs = new BillingSystem.BillingSystem(ate);
+
+            IContract c1 = ate.RegisterContract(new Subscriber("Vasia", "Pupkin"), Enums.TariffType.Light);
+            IContract c2 = ate.RegisterContract(new Subscriber("Dima", "Pupkin"), Enums.TariffType.Light);
+            IContract c3 = ate.RegisterContract(new Subscriber("Petya", "Pupkin"), Enums.TariffType.Light);
+
+            c1.Subscriber.AddMoney(10);
             var t1 = ate.GetNewTerminal(c1);
             var t2 = ate.GetNewTerminal(c2);
             var t3 = ate.GetNewTerminal(c3);
